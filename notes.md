@@ -458,3 +458,72 @@ As well as sampling from the parameter space at each step of the Markov chain, w
 In transmission inference, missing data might be the time of infection of the cases (since typically we only know sampling times) or the number of unsampled cases, for example.
 
 
+### Video 03 - Part 3
+#### outbreaker and outbreaker2
+
+Creates a unified likelihood for genetic & epi data within a Bayesian framework which allows more estimation and greater flexibility.
+
+outbreaker2 a more customizable version of outbreaker.
+
+We're going to focus on the core outbreaker model today.
+
+Data:
+* N sampled cases, each w/ genetic sequenc s_i and time of sampling t_i
+
+Quantities:
+* d(s_i, s_j) = number of mutations (distance) b/w sequences i and j
+* l(s_i, s_j) = number of nucleotide positions which can be compared i and j
+* w = distribution of the generation time
+* f = distribution of the sampling time
+
+Augmented data:
+* α_i = index of the most recent sampled ancestor of i
+* κ_i = number of (unsampled) generations b/w i and α_i
+* (T^inf)_i = date of infection of i
+
+Parameters:
+* mu = mutation rate, per site per generation of infection
+* pi = proportion of unsampled cases
+are estimated as well as the transmission tree
+
+Posterior distribution:
+...
+
+All cases are assumed to be conditionally independent, given the identity of their most recent sampled ancestor, so the likelihood decomposes to:
+...
+
+The pseudo-likelihood is further decomposed into genetic and epidemiological components.
+For each case i = 1, ..., N:
+...
+genetic part, epi part, constant (α_i)
+
+
+#### Genetic part
+The outbreaker genetic model assumes no w/in host genetic diversity (i.e. an individual can only be infected once), and so mutations are direct features of transmission events.
+All transmission events are assumed independent, and the genetic pseudo-likelihood is very fast to compute.
+
+Genetic pseudo-likelihood of case i = probability of observing genetic distance d(s_i, s_α_i) b/w sequence s_i and the ancestral sequence s_α_i w/ i and α_i separated by κ_i generations.
+
+As a method designed for shorter timescale outbreaks, reverse mutations are considered negligible.
+
+#### Epidemiological part
+Time of sampling given time of infection * time of infection given knowledge of inferior * number of missing cases given rate of missing cases
+
+probability of obtaining one 'success' (sampling a case) after κ_i-1 'failures' (unobserved cases), w/ probability of success pi
+
+
+In total, genetic part * epi part = overall likelihood
+That forms the core of the outbreaker model.
+The likelihood expressions introduced in the previous slides are combined w/ priors for the mutation rate mu and proportion of unsampled cases pi.
+
+mu is given a uniform prior on [0,1] - corresponding to an assumption of scarce prior info on this.
+pi is given a beta distributed prior w/ parameters controlled by the user of outbreaker.
+This is flexible prior which can ...
+
+Authors also introduce a method for detecting imported cases -- i.e. cases that are not descended from another case in the outbreak.
+In an initial step of the model, genetic outliers are detected relative to the other samples in the dataset.
+A 'global influence' GI_i is calculated for each sampled case, defined as
+...
+
+where GPL is the genetic pseudo-likelihood.
+This is calculated over the first few samples of the MCMC, say 50.
