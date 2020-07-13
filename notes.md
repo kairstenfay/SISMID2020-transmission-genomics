@@ -1,7 +1,7 @@
 # Module 04 - Transmission Genomics notes
 
 ## 13 Jul 2020
-### Video 01
+### Video 01 - Part 1
 #### New Data - A Big Opportunity
 
 Infections evolve over time (e.g. TB and antibiotic resistance).
@@ -47,7 +47,7 @@ Why do we want to know who infected whom?
 * help with who infected whom - improve outbreak control
 * bigger scale: help w/ choosing best vaccines, best antibiotics
 
-### Video 02
+### Video 01 - Part 2
 #### Challenges in genomic epidemiology & beyond.
 Goal: try to understanda transmission -- "who infected whom" & how confident are we in that?
 
@@ -142,7 +142,7 @@ Genomics provide much higher resolution picture over a histogram.
 Data required for this nice work: SARS-CoV-2 sequences, suspected exposure times and sources from epidemiology
 
 
-### Video 03
+### Video 01 - Part 3
 #### Early work: transmission with sequences
 * Cottam et al: Integrating genetic and epidemiological data to determine transmission pathways of foot-and-mouth disease virus. Proc. Biol. Sci. 2008
     - Phylogenetic trees constrain transmission events
