@@ -140,3 +140,72 @@ Genomics provide much higher resolution picture over a histogram.
 * one big epi cluster separated into 4 distinct genomic clusters: exclude links they thought they knew about
 
 Data required for this nice work: SARS-CoV-2 sequences, suspected exposure times and sources from epidemiology
+
+
+### Video 03
+#### Early work: transmission with sequences
+* Cottam et al: Integrating genetic and epidemiological data to determine transmission pathways of foot-and-mouth disease virus. Proc. Biol. Sci. 2008
+    - Phylogenetic trees constrain transmission events
+* Jombart T, Eggo RM, Dodd PJ, Balloux F (2011) Reconstructing disease outbreaks from genetic data: a graph approach. Heredity 106: 383390
+    - Parsimonious: transmission tree w/ fewest mutations
+
+#### Early work cont'd
+* 2012 Ypma RJ, Bataille AM, Stegeman A, Koch G, Wallinga J, et al. Unravelling transmission trees of infectious diseases by combining genetic and epi. data. Proc Biol Sci 279
+* 2012 Morelli MJ, Thebaud G, Chadoeuf J, King DP, Haydon DT, et al. A Bayesian inference framework to reconstruct transmission trees using epi. and genetic data. PLoS Comput Biol 8
+    - Both use a unified likelihood of genetic and epidemiological data - needs full sampling
+* 2014 Outbreaker: Jombart T ...
+
+#### Outbreaker and SARS
+The data
+* sequences
+* times of sample collection
+* number of cases
+Additional inputs (Derived from data):
+* generation time - time from infection to symptom onset
+* time from infection to sample collection
+
+#### The math behind Outbreaker
+Outbreaker is a Bayesian MCMC method, and it uses _augmentation_.
+"Augmented" quantities for each case _i_:
+* the infector for each case, or most recently sampled infector
+* the number of unknokwn intermediates b/w _i_ and _i_'s ancestor
+* The date when _i_ was infected
+
+The likelihood relies on these augmented data.
+
+#### Outbreaker's likelihood in brief
+**Likelihood for case** _i_ _alpha_
+
+Model for how sequences change over time: P(sequence | ancestor's sequence, intermediates, evolution mode) x
+Model for public health system: P(sampled time | infection time) x
+Model for epidemiology of infection: P(infection time | parent's infection time, intermediates)
+
+**A 60-second MCMC briefing**:
+* propose augmented data: transmission tree, intermediates, times of infection
+* compute the above likelihood
+* accept or reject (in a principled way, depending on proposal method & likelihood)
+* run for a long time. collect "posterior samples" of these quantities
+
+#### Outbreaker results: simulated data
+
+#### Application: SARS (The first SARS!)
+* 13 SARS "genomes" but note, sequencing was very different then
+* Ruan et al, Lancet, Volume 361, Issue 9371, 24 May 2003
+
+#### Discussion
+You'll hear more about the advent of sequencing - much more data now
+Outbreaker is now in the broader package 'outbreaker2'
+there was more in these papers not described
+both these methods have limitations
+* they do not capture the shared ancestry of the pathogens
+* for that, we need phylo trees
+* they do not accommodate variation w/in hosts
+
+#### What's next?
+* reconstructing transmission trees
+* intro to genomics for genomic epi
+* non-phylo outbreak reconstructions in outbreaker
+* phylo trees: theory & practice
+* transphylo - genomic epi w/ trees
+* research forefronts: bringing in more data
+* research forefronts: SARS-CoV-2 and COVID-19
