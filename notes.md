@@ -431,3 +431,30 @@ Some limitations:
 SeqTrack also:
 * Assumes that individuals became infectious in the order they are sampled
 * Has no uncertainty in the output transmission tree or probabilistic parameters
+
+
+### Video 03 - Part 2
+#### A quick primer 1: generation time and sampling time
+
+**generation time** = the time interval b/w the infection of an individual and their seeding of new secondary cases
+
+**sampling time** = the time interval b/w infection and collection of an isolate
+
+#### A quick primer 2: Markov Chain Monte Carlo (MCMC)
+A popular method for exploring complex and/or high-dimensional spaces - e.g. transmission trees.
+
+The main idea:
+posterior - the probability of our model parameters given the data
+likelihood
+prior
+
+When this quantity is hard to maximize directly, we instead form a Markov chain w/ equilibrium distribution equal to the posterior distribution, and then take many samples from this chain.
+
+Essentially, we approx. the posterior distribution by random sampling from a probabilistic space (of all possible transmission trees).
+
+Data-augmented MCMC is a method for dealing w/ missing data w/in an MCMC algorithm.
+As well as sampling from the parameter space at each step of the Markov chain, we also sample values for the missing data.
+
+In transmission inference, missing data might be the time of infection of the cases (since typically we only know sampling times) or the number of unsampled cases, for example.
+
+
