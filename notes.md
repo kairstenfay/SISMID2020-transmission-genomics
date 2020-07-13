@@ -209,3 +209,80 @@ both these methods have limitations
 * transphylo - genomic epi w/ trees
 * research forefronts: bringing in more data
 * research forefronts: SARS-CoV-2 and COVID-19
+
+
+### Video 02 - Part 1
+#### Introduction to genomics for transmission inference
+From genomes to phylogenies
+
+Molecular info provides new ways to combat disesaes!
+Why are they so important? What are they made of? Where are they?
+
+What is a genome?
+An organism's complete set of chromosomes (genetic info).
+Humans have 23 pairs of chromosomes.
+
+Section of DNA we call a gene.
+Each genome contains all of the info needed to build and maintain an organism.
+
+DNA passed from parent => descendants.
+
+How can we look at mutations in DNA to infer tree structure?
+
+#### DNA replication
+Two strands are separated like two sides of a zipper
+The enzyme DNA polymerase moves along the exposed DNA strand, joining newly arrived nucleotides into a new DNA strand.
+
+DNA replication is very accurate but sometimes errors happen.
+During DNA replication, an incorrect base may be added to the growing chain.
+These changes are called mutations.
+
+Other types of damage to DNA cause mutations.
+e.g. exposure to radiation, carcinogens
+
+#### Mutations
+Changes in the DNA can affect one chromosome (inversion) or comprise multichromosomal events (translocation)
+
+Overview of some chromosomal transolcations involved in different cancers and implicated in other conditions, e.g. szichophrenia
+
+Mutations can be duplication, insertion, deletion (can be small sections of DNA)
+
+Sometimes mutations can be beneficial for the organism that carries them, but not for the host
+
+We need to update flu vaccines every year b/c the flu mutates so fast!
+
+Mutations are the raw materials of evolution, e.g. adaptations to hot and cold climates.
+
+Accumulated mutations in the DNA can help us combat diseases. How can we use it?
+
+We need to read DNA.
+How to sequence DNA? Chain termination method
+
+1. Isolate DNA.
+  A single stranded DNA fragment is isolated for which the base sequence is to be determined (the template).
+2. Create "special" basis.
+  Force DNA to replicate w/ DNA Polymerase.
+  Provide source of free bases.
+  Smaller set of some kind of special bases (colored w/ fluorescent dye).
+  When they attach onto DNA fragment, stop replication process (cut DNA).
+3. Put everything together: unknown DNA, normal bases, special bases.
+4. Let the DNA be replicated.
+  DNA polymerase stops replication when a special base is added.
+5. Repeat replication a lot of times!
+  Sequences always start at the same point, but they end in random points when a special base is added.
+  If we do this enough times, a special base could be attached to each position in the DNA sequence at least once.
+6. Separate and read syntehsized fragments (all of different lengths depending on where in sequence special base added).
+  Lay them out in "conveyor belt" that sends them towards a laser.
+  The color at the end of each fragment is detected by a laser beam.
+  Shorter fragments move faster than longer ones.
+
+The chain termination method takes too long when DNA sequences are big.
+The human genome contains approximately 3 billion of these base pairs.
+
+Shotgun sequencing
+* DNA is broken up randomly into numerous small segments, which are sequenced using the chain termination method to obtain reads (fragments).
+* Con: We have to draw enough random segments that we are confident entirety of genome has been sampled.
+
+The last two decades have seen a revolution in genome sequencing.
+
+Recommendation: Life, the science of biology, covers genome sequencing.
