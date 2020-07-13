@@ -389,3 +389,45 @@ Output: DNA sequence (Eulerian circuit)
 
 #### Genome assembly software
 SOAPdenovo, Velvet, ALLPATHS, ABySS
+
+
+### Video 03 - Part 1
+#### Non-phylogenetic transmission reconstruction
+
+Epidemiological outbreak reconstruction
+outbreak datat alone can be used for outbreak reconstruction, but genetic data offer a high-resolution source of extra info.
+
+What can genomic data offer?
+* extra detail
+* resolve transmission where epi data are hard to get/have gaps
+* genomic data now much easier, cheaper, and faster to get than ever before (real-time sequencing even becoming possible in the field)
+
+# Challenge: create a single framework/likelihood incorporating genomic + epi data
+Imagine we have 3 people infected in an outbreak... A, B, and C.
+
+We want to combine our genomic info and our epi info to best narrow down which possible path the infection took.
+
+Infeasible to test all transmission trees.
+
+Early approaches included:
+Maximum likelihood approach
+* first, restrict to all transmission trees which are consistent with known infections
+* then, use genomic data to constrain the set of possible transmission trees (parsimony)
+* then, calculate the likelihood of each remaining tree based on the epi information -- e.g. the chance each individual (a farm) was infected on a given day/able to infect others on a given day (consensus tree)
+
+Graph theory approach to find 'genetically parsimonious' transmission trees.
+Algorithm SeqTrack finds the optimum branching in a directed graph.
+* Create a distance matrix w/ genetic data (i.e. number of mutations between each strain)
+* Create a connected, directed graph with weights w_ij equal to the genetic distance
+* Remove edge _ij_ if t_j < t_i
+* Find the spanning directed tree optimizing (i.e. minimizing) sum of weights along nodes, w_ij
+
+Consider sample collection dates (t).
+Assume anyone who was sampled before someone else can't have been infected by them.
+Some limitations:
+* all cases come from single index case e.g. a single sampled ancestor
+* all cases are known and sampled
+
+SeqTrack also:
+* Assumes that individuals became infectious in the order they are sampled
+* Has no uncertainty in the output transmission tree or probabilistic parameters
