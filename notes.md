@@ -286,3 +286,106 @@ Shotgun sequencing
 The last two decades have seen a revolution in genome sequencing.
 
 Recommendation: Life, the science of biology, covers genome sequencing.
+
+
+### Video 02 - Part 2
+#### How many random fragments are enough to obtain the original DNA sequence?
+
+G = length of genome
+L = read length
+N = number of reads
+
+What is the minimum number of reads required to cover all the sequence?
+```
+LN >= G
+```
+As the fragments are randomly distributed, it is unlikely that the minimum will be enough.
+
+Let's look at the coverage per nucleotide instead.
+The average coverage per nucleotide is:
+```
+c = (LN)/G
+```
+What is the probability of a read with size L covers 1 nucleotide in the sequence of size G?
+
+```
+L = 13
+G = 26
+p = L/(G-L + 1) = 13/14 = 0.928
+```
+
+In more general terms...
+What is the probability of N(4) reads covers 1 nucleotide exactly x (2) times?
+Binomial distribution
+
+```
+P(x reads covering one base) = (N x)p^x(1 - p)^(N - x)
+```
+
+p is small: size of the read (L=100 bases) is very small compared to the size of the sequence (G=23 billion bases).
+Small read ~100 bases long.
+
+The binomial distribution converges towards the Poisson distribution when p tends to zero:
+
+```
+P(x reads covering one base) = (N x)p^x(1 - p)^(N - x)
+P(x reads covering one base) = (e^-c * c^x)/(x!)
+p = L/(G-L+1)
+c = (LN)/G
+```
+
+Poisson distribution w/ rate = quantity c.
+Avg. number of reads that cover particular nucleotide.
+
+How mnay random fragments are enough to obtain the original DNA sequence (i.e. obtain coverage at every nucleotide)?
+```
+c = (LN)/G
+```
+
+Generally want to increase N until % of genome not covered is low (< 25%).
+
+#### How to obtain the original DNA sequence from its fragments?
+Graphs!
+Brides of Konigsberg problem.
+Ideas for solving our problem, as well as the entire branch of mathematics, known today as graph theory, can be traced back 300 years ago to this city.
+(Konigsberg, presnet-day Kaliningrad, Russia)
+
+At the time, Konigsberg's residents enjoyed strolling through their city, and they wondered if every part of the city could be visited by walking across each of the seven bridges exactly once and returning to one's starting location.
+City has 4 parts separated by the Pregel River.
+
+Leonhard Euler made a conceptual breakthrough.
+Euler's first insight was to reprsent each landmass as a point (called a node) and each brdige as a line segment (called an edge) connecting the two appropriate points.
+This creates a graph, a network of nodes connected by edges.
+
+It was not possible; when it is possible, we call it Eulerian cycle (or path).
+
+200 years later, in 1946, Dutch mathematician Nicolaas de Bruijn became interested in the superstring problem.
+Shortest possible word to make that contains all words within. e.g. angelfish (angel, gel, elf, fish)
+
+ex.
+Alphabet: 0 and 1
+Input: all possible 3-mers 000, 001, 010, 011, 100, 101, 110, 111
+Output: 0001110100
+
+De Bruijn answered this question by borrowing Euler's solution to the Bridge problem.
+Every possible (k-1)-mer is assigned to a node
+prefix, suffix
+110
+11 -> 10
+
+Two nodes are connected by a directed edge if there is a word whose prefix is the former and whose suffix is the latter.
+
+Find word that forms Eulerian circuit.
+
+#### 50 years later...
+Obtain original DNA sequence from its fragments with De Bruijn graphs.
+
+#### Can you assemble your DNA with De Bruijn graphs?
+Our alphabet: ATCG
+Input: reads (k-mers)
+ATCAG, TCAGT
+
+Output: DNA sequence (Eulerian circuit)
+
+#### Genome assembly software
+SOAPdenovo, Velvet, ALLPATHS, ABySS
