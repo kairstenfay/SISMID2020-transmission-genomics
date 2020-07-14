@@ -582,3 +582,164 @@ Tree shapes -- for a 45-leaf tree, there are 10^33 possible shapes, even if only
 So is it practical to find the truly best tree among all the possible trees?
 Not really, but it works quite well.
 There is usually some uncertainty.
+
+
+### Video 01 - Part 2
+#### Pylogenetic analysis
+Stages
+1. start with a question
+2. identify a model and parameters that could answer the question
+3. collect sequence data that would help to answer the question
+4. identify the orthologous sequences
+5. align sequences (multiple sequence alignment)
+6. estimate tree and other parameters given the data and model
+7. estimate the error associated w/ the tree and/or parameter estimates
+8. does it answer your question?
+Unlock new biological insight!
+
+We'll start from step 6 in this lecture.
+1-3 are specific to your research question.
+4-5 are other areas of bioinformatics.
+
+#### What data do we need?
+Inherited material (DNA, RNA).
+Molecular (sequence) data are usually the key for phylogenetic tree reconstruction.
+
+Quick, inexpensive, reliable.
+Sequences are highly specific and rich in info.
+
+We could use morphological or phenotypic data.
+
+The _characters_ are the entries of the aligned data.
+In molecular data, each charatcer is a genetic site or locus.
+Ex. suppose the multiple sequence alignment looks like this:
+```fasta
+>A130
+atgaaaccct cgcgccctta
+```
+
+#### Distance- and character- based tree building
+1. Distance based methods
+Compute distances b/w pairs of sequences and find a tree (e.g. using clustering) that best describe these.
+Ex. neighbor joining
+
+In fact the distances are still based on characters, but hte characters aren't considered one at a time --
+they are pooled together to create pairwise distances b/w all the sequences in the dataset.
+
+2. Character-based methods
+Consider sequences of DNA, RNA, morphological characters _one at a time_, and seek the tree with an optimal "score": likelihood or parsimony;
+or use a Bayesian method to compute a posterior collection of phylo trees.
+
+#### Can we get the best tree?
+
+Either way, we need to understand how to compare sequences to each other.
+We need to either compute a distance b/w all the pairs of sequences or to figure out a likelihood or score for the tree.
+
+To do these comparisons, we use models that describe how sequences evolve.
+
+#### Models of sequence evolution
+What is this and how does it describe distance?
+
+How can we compute the distance b/w two sequences?
+A common approach: the # of differences per site.
+E.g. for the two sequences `AACCTATCGG` and `AATCTAACGG` differ in two places, so they would be 2/10 = 0.2 substitutions per site apart.
+
+In other words, ifd the # of differences is _m_ and the total number of sites is _n_, then this basic distance is
+```
+d_s = m/n
+```
+
+However: what if there were actually 2 changes at the same site?
+This simple computation would actually underestimate the true distance.
+
+There are many models for sequence evolution.
+They define the probability that a character at a site wil evolve into a diff. character at that site over a specified time period.
+They can take various complexities into account.
+Models of sequence evolution can be used to define distances b/w two sequences, and they can be used to simulate evolving sequences.
+
+A,C,T,G: adenine, cytosine, guanine, thymine
+
+A and G: 2-ring structures, purine
+C and T: 1-ring structures, pyrimidine
+
+Transition: a purine-purine change, or a pyrimidine-pyrimidine change (C-T or A-G)
+Transversion: a pyrimidine-purine change (or vice versa)
+
+The Jukes-Cantor model treats these as having the same probability.
+But it's reasonalbe to think that transitions might be more probable than transversions.
+Also, A, C, T, and G might not all be equally frequent.
+
+#### Assumptions and parameters in several common methods
+The Jukes-Cantor model and other models take this into account.
+In the JC model, any possible change is equally likely.
+It is the simplest model of sequence evolution.
+
+Conceptually the link is this: The JC model (and higher-complexity variations) define the probability that one sequence evolves into another.
+The "distance" is related to the amt. of time that this would take in the model.
+
+The Jukes-Cantor model is the simplest, bu they are all based on homogeneous continuous-time Markov chains.
+These are beyond teh scope of this course.
+The wiki page on these models is quite good as a quick reference: en.wikipedia.org/wiki/Models_of_DNA_evolution.
+"Markov Processes for Stochastic Modeling" by Masaaki Kijima is a math reference.
+
+If the substitution rate is _mu_ substitutions per time, then the mean number of substitutions in time _t_ is _mu*t_.
+The CTMC has a rate matrix _Q_ whose off-diagonal entries are the instantaneous rates of transition A -> C,
+A -> T, C -> G, etc. and these are all equal to _mu_/4.
+The transition matrix is P(t) = e^(Qt).
+
+Consider the probability that a change from state i to state j is observed in time t, if the substitution rate is mu.
+We have a probability e^(-mu*t) that no event happens in time t.
+The rate of leaving each state is 3*mu/4 since 3 of the 4 "changes" (A to A, C, T, G) arrive at a different base.
+So the expected number of changes in time t is
+```
+v = 3/(4*mu*t)
+```
+
+We can write `mu * t = 4/3v`.
+
+The probability of any change at the site is 3 times this, becausethere are 3 choices of base that are different from the current one.
+```
+P(change) = 3/4 - (3/4)*e^(mu * t)
+```
+People use this relationship to relate a distance b/w two sequences (v := d) to the empirical fraction of the sequence's total length where there is a change b/w the two.
+
+The Jukes-Cantor model's distance is
+...
+
+where d_s is the same as above (# of differences / sequence length).
+
+JC: ACTG all equally frequent and all changes equally likely.
+K80: (Kimura 1980) ACTG all equally frequent, but transitions more likely than transversions
+F81: as with JC but ACTG are not all equally frequent
+HKY85: Transitions and transversions are not equally likely and ACTG are not all equally frequent
+
+In pratice, these models are implemented w/in software packages used to build trees.
+
+#### Building phylo trees: the central task of phylogenetics
+Neighbor joining
+- distances are defined using sequence evolution models
+- idea: join closest tips, make new node, repeat
+- details: differing clustering algorithms
+- single linkage, complete linkage, UPGMA
+- software: bionj, nj in R
+- ref: Saitou and Nei 1987
+
+The neighbor joining algorithm:
+Intuition: start w/ all the tips separate.
+Create a new node that joins the two that are closest to each other.
+Then define the distances b/w these two tips and the new node.
+Then define the distances b/w the new node and all the other tips.
+Forget about those two tips, but keep the new node.
+Repeat until everything is joined up.
+
+NJ strengths: can use realistic substitution model;
+computationall efficient: no need to compare lots of trees for an optimality condition;
+great for large datasets, short distances
+
+Tree-like distances: if the distances are perfect (and reflect the true tree), the tree is guaranteed to be correct.
+
+Weaknesses: if the distances aren't perfect then the tree may well be wrong.
+In some circumstances the branch lengths can be negative!
+The method is sensitive to gaps in the sequences.
+The model does not allow for diff sites to have diff "matches" to the tree -- they all just contribute to the distance.
+Distance measures may be inaccurate for large distances.
