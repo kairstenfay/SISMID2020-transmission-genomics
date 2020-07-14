@@ -527,3 +527,58 @@ A 'global influence' GI_i is calculated for each sampled case, defined as
 
 where GPL is the genetic pseudo-likelihood.
 This is calculated over the first few samples of the MCMC, say 50.
+
+
+## 14 Jul 2020
+### Video 01 - Part 1
+#### Intro to Phylogenetics
+
+**Phylogenetics** is the study of the evolutionary history and relationships among individuals or groups of organisms.
+Phylogenetics goes back to the origin of evolution.
+
+Darwin's classic tree example "I think"
+
+There are many applications of pylogenetics:
+* identifying pathogens
+* classifications
+* answering biological questions
+* bioinformatics
+* forensics
+
+There are a lot of learning materials online. EBI: ebi.ac.uk/training/online/course/introduction-phylogenetics
+
+#### What are phylogenetic trees?
+**Phylogenetic tree** is a tree structure (with nodes and edges but no cycles) in which tips correspond to organisms and internal nodes correspond to inferred common ancestors.
+**Root** usually an inferred oldest node, or node separating your study organisms from an "outgroup".
+There may not bea root.
+
+```r
+load("demotree.Rdata")
+library(ape)
+plot(tr, edge.width=2, edge.col="grey", tip.col=c("grey","grey","grey","blue","blue","blue",rep("grey",6)))
+```
+
+If we are studying the blue organisms, we might want to root the tree this way (but we don't have to -- it depends on the question).
+
+Same tree w/ a different root. -- structurally the same tree
+
+The horizontal axis, branch lengths, are in units of _genetic distance_, typically something like the number of substitutions per site in molecular (sequence) data.
+Sometimes we create a _timed_ phylogenetic tree.
+Its branch lengths are in units of time.
+
+The vertical axis -- NOTHING!
+
+In the above tree, Organism 11 is as closely related to Organism 8 as Organism 10 is to Organism 9.
+
+#### Terminology
+**sister groups** - two groups descending from the same ancestor
+**clade** - an ancestor and all of its descendents. This is also sometimse called a _monophyletic clade_.
+**common ancestor** (of a set of tips) - a node that is an ancestor of all tips in the set
+**most recent common ancestor** (MRCA) of a set of tips - the common ancestor of the st of tips that is farthest from the root
+
+#### Lots of trees
+Tree shapes -- for a 45-leaf tree, there are 10^33 possible shapes, even if only considering trees w/ clades of 10, 10, 12, and 13 nodes each.
+
+So is it practical to find the truly best tree among all the possible trees?
+Not really, but it works quite well.
+There is usually some uncertainty.
