@@ -743,3 +743,95 @@ In some circumstances the branch lengths can be negative!
 The method is sensitive to gaps in the sequences.
 The model does not allow for diff sites to have diff "matches" to the tree -- they all just contribute to the distance.
 Distance measures may be inaccurate for large distances.
+
+
+### Video 01 - Part 3
+#### Maximum parsimony
+parsimony = simplicity
+Based on character/sequence evolution on tree.
+
+Find the tree that minimises the number of changes you need to describe each character.
+Character-based method (not distance based).
+
+Strengths: simple to score and understand. Computationally efficient (simple)
+Weaknesses: Lack of explicity assumptions (e.g. hypervariable sites? sites with many changes?)
+No branch length or timing info;
+not statistically consistent software: PAUP, MEGA, TNT
+
+Maximum parsimony out of favor b/c we like our rates (e.g. transversion).
+
+#### Maximum likelihood
+We have three organisms. We want to make a tree describing their shared ancestry.
+We do not know the sequences at the internal nodes.
+
+Likelihood: probability of given data parameters of an unerlying model, L(D|M)
+
+These are computed usingthe same continuous time Markov chains descdribed above: Jukes-Cantor, etc.
+
+These CTMCs give the probability that (for ex.) an A evolved from a C on a branch of length t, P_(a,c)(t)
+
+For large samples: max likelihood estimates of parameters (MLEs) are unbiased,consistent and efficient
+
+Felsenstein pruning algo makes it feasible to sum over the unknown states at the internal nodes
+
+For ex. the likelihood on the little demo tree for site 1 is the likelihood that the root (node 1) is what in state s_1, that it evolves from there to state c over branch v_c,ad s1 evolves to s3 in length v_12.
+
+...
+
+Software: RAxML, PhyML, R (phangorn), IQtree, FastTree
+
+Strengths: rich repertoire of sophisticated models.
+Can estimate parameters of underlying models.
+Theis means we can estimate the mutation rate, transition/transversion ratio, etc.
+
+Remember in the dmeo about organisms?
+ML methods allow us to estimate what the sequence (or phenotype, if we use phenoytpe data) was like at internal points in the tree.
+
+Weaknesses: primarily computaitonal cost
+
+#### Bayesian methods
+Bayes' theorem w/ Model and Data
+
+P(D|M) is the same as the likelihood.
+
+P(M): prior info
+Use MCMC to generate a sample from the posterior.
+
+Software: Beast, MrBayes
+
+Strengths: clear re: uncertainty.
+The posterior collection of trees includes trees supported by the data, with tree topologies more often included if they are better supported.
+
+Note very different philosophy to ML.
+There are many flexible models of evolution (as in ML) paramtere estimation (as in ML).
+Bayesian approaches take prior knowledge into account.
+
+Weaknesses:
+posterior probabilities appear too high: why? sensistive to model violations
+prior knowledge hard to obtain; people use defaults in software but innocent-looking priors can really drive the posterior.
+computationally slow, intractable past a few hundred sequences.
+
+#### Tree quality
+3 things to consider:
+1. consistency: approaches true value if the amount of data grows.
+  parsimony may not be consistent.
+  MLEs of parameters usually are.
+2. efficiency: unbiased estimate w/ lowest variance.
+  usually people look at the probability of recovering the correct tree as the # of sites increases
+3. robustness: correct answer even if assumptions are violated?
+
+You will probably also consider speed; broadly, ML beats parsimony for molecular data
+
+#### Bootstrapping
+Resample columns of your data (so some are left out, others repeated)
+
+Repeat your tree construction
+Perform this many times
+For each edge in your original tree, how many times does its descending clade occur among your bootstrap trees?
+
+Bootstrap #s don't have a clear statistical interpretation.
+but bootstrapping is very important to understand tree uncertainty.
+
+Not so good if sites aren't independent.
+Why? - because you get similar data on different bootstraps, more than you would if the sites were independent.
+So nodes can have "high bootstrap values" (i.e. a split in a tree occurs often) not because the tree is a particularly great model, but because the bootstrap resampling isn't doing what it would be doing if the independence condition were met.
